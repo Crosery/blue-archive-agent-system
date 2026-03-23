@@ -306,7 +306,8 @@ body{font-family:'Zen Kaku Gothic New','Outfit',sans-serif;color:var(--n800);bac
     <p class="sec-s">从先生到社团 Agent，四层架构一目了然。指挥链向下派发，汇报链向上汇总，茶话会横向交流。</p>
   </section>
   <div class="arch-box rv" data-d="1" style="max-width:1200px;margin:0 auto;padding:clamp(1.5rem,3vw,2.5rem)">
-    <svg class="arch-svg" viewBox="0 0 760 440" style="max-height:75vh" role="img" aria-label="SCHALE Agent System 四层架构全景图">
+    <img src="architecture.png" alt="SCHALE Agent System 四层架构全景图：从先生到社团 Agent 的层级关系、指挥链、茶话会通道和权限审批链" style="width:100%;height:auto;border-radius:12px;display:block" />
+    <svg class="arch-svg" viewBox="0 0 760 440" style="display:none" role="img" aria-label="SCHALE Agent System 四层架构全景图">
       <!-- L0: Sensei -->
       <rect x="330" y="8" width="100" height="40" rx="20" fill="#FDF6EC" stroke="#D4943A" stroke-width="1.5"/>
       <text x="380" y="25" text-anchor="middle" fill="#D4943A" font-family="Outfit" font-size="11" font-weight="800">SENSEI</text>
@@ -387,12 +388,7 @@ body{font-family:'Zen Kaku Gothic New','Outfit',sans-serif;color:var(--n800);bac
       <circle cx="504" cy="392" r="18" fill="#FDF6EC" stroke="#D4943A" stroke-width="1.5"/><text x="504" y="396" text-anchor="middle" fill="#D4943A" font-family="Outfit" font-size="8" font-weight="700">先生</text>
       <text x="560" y="389" fill="#A3BDD1" font-family="Outfit" font-size="9" font-weight="500">Approve</text><text x="560" y="402" fill="#A3BDD1" font-family="Outfit" font-size="9" font-weight="500">or Deny</text>
     </svg>
-    <div class="arch-legend">
-      <div class="legend-i"><div class="legend-ln" style="background:#128AFA"></div>Command</div>
-      <div class="legend-i"><div class="legend-ds" style="border-color:#128AFA"></div>Report</div>
-      <div class="legend-i"><div class="legend-ds" style="border-color:#E88B8B"></div>Tea Party</div>
-      <div class="legend-i"><div class="legend-ln" style="background:linear-gradient(90deg,#1A9B8A,#7B4FA0,#128AFA,#D4943A)"></div>Permission</div>
-    </div>
+    <!-- legend is included in the PNG image -->
   </div>
 </div>
 
