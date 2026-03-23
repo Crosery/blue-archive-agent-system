@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S.C.H.A.L.E. — Agent Command System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --sky:#128AFA;--sky-l:#5EAEFF;--sky-p:#E8F4FF;--sky-d:#0A5CB8;
+  --cream:#FEFCF9;
+  --aby:#D4943A;--aby-bg:#FDF6EC;
+  --geh:#C83C3C;--geh-bg:#FDF0EF;
+  --tri:#2B5EA7;--tri-bg:#EDF3FB;
+  --mil:#1A9B8A;--mil-bg:#ECF9F7;
+  --hya:#7B4FA0;--hya-bg:#F5EFF9;
+  --sha:#3A8F5C;--sha-bg:#EDF7F1;
+  --n950:#0D1B2A;--n800:#1B3A5C;--n600:#3D6488;--n400:#7A9BB5;
+  --n200:#D0DFE9;--n100:#E8EFF5;--n50:#F4F7FA;
+  --eo:cubic-bezier(.16,1,.3,1);--eq:cubic-bezier(.25,1,.5,1);
+}
+html{font-size:16px;scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:'Zen Kaku Gothic New','Outfit',sans-serif;color:var(--n800);background:var(--cream);-webkit-font-smoothing:antialiased;overflow-x:hidden;font-kerning:normal;text-rendering:optimizeLegibility}
+.lucide{width:1em;height:1em;stroke-width:2;vertical-align:-.125em}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ══════════ HERO ══════════ */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;background:linear-gradient(175deg,#D6ECFF 0%,#F0F7FF 35%,var(--cream) 100%)}
+.hero-sky{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.cloud{position:absolute;border-radius:50%;background:white;filter:blur(30px)}
+.c1{width:400px;height:120px;top:10%;left:-5%;opacity:.5;animation:dft 60s linear infinite}
+.c2{width:300px;height:80px;top:25%;left:20%;opacity:.35;animation:dft 45s linear infinite 10s}
+.c3{width:500px;height:100px;top:5%;right:-10%;opacity:.5;animation:dfr 55s linear infinite 5s}
+.c4{width:250px;height:70px;top:40%;right:5%;opacity:.3;animation:dfr 50s linear infinite 15s}
+@keyframes dft{from{transform:translateX(0)}to{transform:translateX(calc(100vw + 500px))}}
+@keyframes dfr{from{transform:translateX(0)}to{transform:translateX(calc(-100vw - 500px))}}
+.halo-d{position:absolute;border:2.5px solid var(--sky);border-radius:50%;opacity:.12;animation:fh 8s var(--eq) infinite alternate}
+.h1{width:300px;height:300px;top:15%;right:8%}.h2{width:180px;height:180px;bottom:20%;left:5%;animation-delay:2s;opacity:.08}.h3{width:100px;height:100px;top:60%;right:25%;animation-delay:4s;opacity:.1;border-style:dashed}
+@keyframes fh{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(-20px) rotate(15deg)}}
+.hero-x{position:absolute;width:2px;background:var(--sky);opacity:.06}
+.hero-x::after{content:'';position:absolute;height:2px;background:var(--sky);top:50%;left:50%;transform:translate(-50%,-50%)}
+.x1{height:120px;top:20%;left:12%;transform:rotate(15deg)}.x1::after{width:80px}
+.x2{height:80px;bottom:15%;right:18%;transform:rotate(-10deg)}.x2::after{width:60px}
+.hero-c{position:relative;z-index:2;padding:0 clamp(2rem,8vw,8rem);max-width:1200px;margin:0 auto;width:100%}
+.hero-ey{display:inline-flex;align-items:center;gap:8px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--sky);margin-bottom:24px;opacity:0;animation:ru .8s var(--eo) .3s forwards}
+.hero-ey::before{content:'';width:32px;height:2px;background:var(--sky)}
+.hero-t{font-family:'Outfit',sans-serif;font-size:clamp(3.5rem,8vw,7rem);font-weight:900;line-height:.95;letter-spacing:-3px;color:var(--n950);margin-bottom:24px}
+.hero-t .ln{display:block;opacity:0;animation:ru .8s var(--eo) forwards}
+.hero-t .ln:nth-child(1){animation-delay:.4s}
+.hero-t .ln:nth-child(2){animation-delay:.55s}
+.hero-t .ln:nth-child(3){animation-delay:.7s;color:var(--sky);font-style:italic;font-family:'Playfair Display',serif;font-size:.65em;letter-spacing:-1px;margin-top:.15em}
+.hero-d{max-width:520px;font-size:clamp(1rem,1.8vw,1.15rem);line-height:1.7;color:var(--n600);margin-bottom:48px;opacity:0;animation:ru .8s var(--eo) .85s forwards}
+.hero-sh{display:flex;align-items:center;gap:12px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--n400);opacity:0;animation:ru .8s var(--eo) 1.1s forwards;cursor:pointer}
+.scr-l{width:1px;height:48px;background:linear-gradient(180deg,var(--sky),transparent);position:relative;overflow:hidden}
+.scr-l::after{content:'';position:absolute;top:-100%;width:100%;height:100%;background:var(--sky-l);animation:sp 2s var(--eq) infinite}
+@keyframes sp{0%{top:-100%}60%{top:100%}100%{top:100%}}
+.hero-s{position:absolute;right:clamp(2rem,8vw,8rem);bottom:15%;display:flex;flex-direction:column;align-items:center;gap:12px;opacity:0;animation:ru .8s var(--eo) 1s forwards}
+.s-halo{width:100px;height:100px;border:2px solid var(--sky);border-radius:50%;display:grid;place-items:center;position:relative;animation:fh 6s var(--eq) infinite alternate}
+.s-halo::before{content:'';position:absolute;inset:-8px;border:1px dashed var(--sky-l);border-radius:50%;animation:ss 30s linear infinite}
+@keyframes ss{to{transform:rotate(360deg)}}
+.s-halo-i{font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:var(--sky)}
+.s-tag{font-family:'Outfit',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--sky-d);background:var(--sky-p);padding:4px 14px;border-radius:20px}
+@keyframes ru{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══════════ REVEAL ══════════ */
+.rv{opacity:0;transform:translateY(40px);transition:opacity .7s var(--eo),transform .7s var(--eo)}
+.rv.vis{opacity:1;transform:translateY(0)}
+.rv[data-d="1"]{transition-delay:.1s}.rv[data-d="2"]{transition-delay:.2s}.rv[data-d="3"]{transition-delay:.3s}.rv[data-d="4"]{transition-delay:.4s}.rv[data-d="5"]{transition-delay:.5s}
+
+/* ══════════ SECTION SHARED ══════════ */
+.sec{padding:clamp(80px,10vw,140px) clamp(2rem,8vw,8rem);max-width:1400px;margin:0 auto;position:relative}
+.sec-n{font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--sky);margin-bottom:8px}
+.sec-h{font-family:'Outfit',sans-serif;font-size:clamp(2.2rem,5vw,4rem);font-weight:900;letter-spacing:-2px;line-height:1;color:var(--n950);margin-bottom:16px}
+.sec-s{font-size:clamp(.95rem,1.5vw,1.1rem);line-height:1.7;color:var(--n600);max-width:540px}
+
+/* ══════════ SCENE DIVIDERS ══════════ */
+.divider{width:100%;height:120px;position:relative;overflow:hidden}
+.divider svg{width:100%;height:100%;display:block}
+
+/* ══════════ 00 — ARCHITECTURE (THE HERO DIAGRAM) ══════════ */
+.arch-wrap{position:relative;background:linear-gradient(175deg,#E0EFFE 0%,#F5F9FF 40%,var(--cream) 100%);overflow:hidden}
+.arch-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--aby),var(--geh),var(--tri),var(--mil),var(--hya),var(--sha))}
+/* Floating halos in arch section */
+.arch-halo{position:absolute;border:2px solid var(--sky);border-radius:50%;opacity:.05;pointer-events:none}
+.ah1{width:400px;height:400px;top:-100px;right:-80px;animation:fh 12s var(--eq) infinite alternate}
+.ah2{width:200px;height:200px;bottom:60px;left:-60px;animation:fh 10s var(--eq) infinite alternate 3s;border-style:dashed}
+
+.arch-box{position:relative;padding:clamp(2rem,4vw,3.5rem);z-index:1}
+.arch-svg{width:100%;height:auto;display:block}
+.arch-legend{display:flex;flex-wrap:wrap;gap:20px;padding:16px 24px;background:rgba(255,255,255,.7);backdrop-filter:blur(8px);border-radius:14px;border:1px solid var(--n100);margin-top:24px}
+.legend-i{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--n600);font-weight:500}
+.legend-ln{width:24px;height:3px;border-radius:2px}
+.legend-ds{border-top:2px dashed;height:0;width:24px}
+
+@keyframes svg-pulse{0%{stroke-dashoffset:0}100%{stroke-dashoffset:-20}}
+.pa{animation:svg-pulse 1.5s linear infinite}
+
+/* ══════════ 01 — SCHALE ══════════ */
+.schale-bg{background:linear-gradient(180deg,var(--cream) 0%,var(--sky-p) 50%,var(--cream) 100%);position:relative;overflow:hidden}
+.schale-bg::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;border:2px solid var(--sky);border-radius:50%;opacity:.04}
+.schale-bg::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;border:1.5px dashed var(--sky);border-radius:50%;opacity:.06;animation:ss 40s linear infinite}
+.sch-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:48px;align-items:center}
+.sch-vis{text-align:center;position:relative}
+.l-halo{width:140px;height:140px;margin:0 auto 24px;position:relative}
+.l-ring{position:absolute;inset:0;border:3px solid var(--sky);border-radius:50%;animation:fh 7s var(--eq) infinite alternate}
+.l-ring::after{content:'';position:absolute;inset:-14px;border:1.5px dashed var(--sky-l);border-radius:50%;opacity:.4;animation:ss 25s linear infinite reverse}
+.l-core{position:absolute;inset:14px;background:var(--sky);border-radius:50%;display:grid;place-items:center;color:white;font-family:'Outfit',sans-serif;font-weight:800;font-size:15px;text-align:center;line-height:1.3;box-shadow:0 8px 40px #128AFA55}
+.l-name{font-family:'Outfit',sans-serif;font-size:20px;font-weight:700;color:var(--n950);margin-bottom:4px}
+.l-role{font-size:13px;color:var(--n400);margin-bottom:20px}
+.pl{width:2px;height:50px;margin:0 auto 16px;background:linear-gradient(180deg,var(--sky),transparent);position:relative;overflow:hidden}
+.pl::after{content:'';position:absolute;top:-100%;width:100%;height:40%;background:var(--sky-l);animation:dp 2.5s var(--eq) infinite}
+@keyframes dp{0%{top:-40%;opacity:1}70%{top:120%;opacity:0}100%{top:120%;opacity:0}}
+.fn-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.fn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;background:rgba(255,255,255,.8);border:1px solid #D0E4F7;border-radius:20px;font-size:12px;font-weight:500;color:var(--sky-d);transition:all .2s var(--eq);backdrop-filter:blur(4px)}
+.fn:hover{background:white;transform:translateY(-2px);box-shadow:0 4px 16px rgba(18,138,250,.12)}
+.fn .lucide{font-size:14px;opacity:.6}
+.sch-info{display:flex;flex-direction:column;gap:24px}
+.ib{padding:24px;border-left:3px solid var(--sky);background:rgba(255,255,255,.6);backdrop-filter:blur(8px);border-radius:0 16px 16px 0}
+.ib h3{font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:var(--n950);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.ib h3 .lucide{font-size:18px;color:var(--sky)}
+.ib p{font-size:13.5px;line-height:1.7;color:var(--n600)}
+/* Task flow */
+.tf{display:flex;align-items:center;gap:0;padding:24px 0;flex-wrap:wrap;justify-content:center}
+.tf-n{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.tf-d{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:20px;box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.tf-d .lucide{stroke-width:2.5}
+.tf-l{font-size:11px;font-weight:600;color:var(--n800)}
+.tf-s{font-size:9px;color:var(--n400)}
+.tf-a{width:40px;height:2px;background:var(--n200);position:relative;margin:0 4px;flex-shrink:0}
+.tf-a::after{content:'';position:absolute;right:-1px;top:-4px;border:5px solid transparent;border-left:6px solid var(--n200)}
+
+/* ══════════ 02 — SCHOOLS (EACH IS A WORLD) ══════════ */
+.schools-bg{background:var(--cream);position:relative}
+/* Full-width school bands instead of cards */
+.school-band{position:relative;overflow:hidden;border-bottom:1px solid var(--n100)}
+.school-band:last-child{border-bottom:none}
+.sb-inner{max-width:1400px;margin:0 auto;padding:clamp(40px,6vw,80px) clamp(2rem,8vw,8rem);display:grid;gap:clamp(24px,4vw,48px);align-items:center}
+/* Alternating layouts */
+.sb-inner.layout-a{grid-template-columns:1fr 1.8fr}
+.sb-inner.layout-b{grid-template-columns:1.8fr 1fr}
+.sb-inner.layout-c{grid-template-columns:1fr 1fr 1fr;text-align:center}
+.sb-inner.layout-wide{grid-template-columns:auto 1fr auto}
+
+/* School identity block */
+.sb-id{position:relative;z-index:1}
+.sb-emblem{width:56px;height:56px;border-radius:14px;display:grid;place-items:center;font-size:26px;margin-bottom:16px}
+.sb-emblem .lucide{stroke-width:1.8}
+.sb-name{font-family:'Outfit',sans-serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:900;letter-spacing:-1px;line-height:1;margin-bottom:4px}
+.sb-jp{font-size:12px;color:var(--n400);margin-bottom:12px}
+.sb-tag{display:inline-block;padding:4px 12px;border-radius:8px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
+.sb-desc{font-size:14px;line-height:1.7;color:var(--n600);max-width:400px}
+/* Club list */
+.sb-clubs{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.sb-club{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:10px;font-size:12px;font-weight:600;background:rgba(255,255,255,.7);border:1px solid rgba(0,0,0,.06);transition:all .2s var(--eq)}
+.sb-club:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.sb-club .lucide{font-size:14px;opacity:.5}
+.sb-ct{font-size:10px;opacity:.4}
+
+/* Background decoration per school */
+.sb-deco{position:absolute;pointer-events:none;z-index:0}
+/* Abydos — desert sun rays */
+.band-aby{background:linear-gradient(135deg,var(--aby-bg) 0%,var(--cream) 60%)}
+.band-aby .sb-deco{right:-40px;top:-40px;width:300px;height:300px;border:3px solid var(--aby);border-radius:50%;opacity:.06}
+.band-aby .sb-deco::after{content:'';position:absolute;inset:40px;border:2px dashed var(--aby);border-radius:50%;opacity:.5}
+/* Gehenna — sharp triangle */
+.band-geh{background:linear-gradient(135deg,var(--geh-bg) 0%,var(--cream) 60%)}
+.band-geh .sb-deco{right:5%;bottom:-30px;width:0;height:0;border-left:120px solid transparent;border-right:120px solid transparent;border-bottom:200px solid var(--geh);opacity:.03}
+/* Trinity — cross */
+.band-tri{background:linear-gradient(135deg,var(--tri-bg) 0%,var(--cream) 60%)}
+.band-tri .sb-deco{left:60%;top:10%;width:3px;height:160px;background:var(--tri);opacity:.05}
+.band-tri .sb-deco::after{content:'';position:absolute;width:120px;height:3px;background:var(--tri);top:50px;left:-58px}
+/* Millennium — circuit pattern */
+.band-mil{background:linear-gradient(135deg,var(--mil-bg) 0%,var(--cream) 60%)}
+.band-mil .sb-deco{right:8%;top:20%;width:200px;height:200px;border:2px solid var(--mil);border-radius:50%;opacity:.05}
+.band-mil .sb-deco::before{content:'';position:absolute;inset:30%;border:1.5px solid var(--mil);border-radius:4px;transform:rotate(45deg)}
+.band-mil .sb-deco::after{content:'';position:absolute;width:6px;height:6px;background:var(--mil);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%)}
+/* Hyakkiyako — organic droplet */
+.band-hya{background:linear-gradient(135deg,var(--hya-bg) 0%,var(--cream) 60%)}
+.band-hya .sb-deco{right:10%;top:5%;width:180px;height:260px;border:2px solid var(--hya);border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;opacity:.04;transform:rotate(15deg)}
+/* Shanhaijing — hexagon */
+.band-sha{background:linear-gradient(135deg,var(--sha-bg) 0%,var(--cream) 60%)}
+.band-sha .sb-deco{right:5%;bottom:10%;opacity:.04}
+.band-sha .sb-deco svg{width:200px;height:200px}
+
+/* School colors */
+.band-aby .sb-name{color:var(--aby)}.band-aby .sb-emblem{background:var(--aby-bg);color:var(--aby)}.band-aby .sb-tag{background:var(--aby-bg);color:#8B6425}
+.band-geh .sb-name{color:var(--geh)}.band-geh .sb-emblem{background:var(--geh-bg);color:var(--geh)}.band-geh .sb-tag{background:var(--geh-bg);color:#8B2222}
+.band-tri .sb-name{color:var(--tri)}.band-tri .sb-emblem{background:var(--tri-bg);color:var(--tri)}.band-tri .sb-tag{background:var(--tri-bg);color:#1D4175}
+.band-mil .sb-name{color:var(--mil)}.band-mil .sb-emblem{background:var(--mil-bg);color:var(--mil)}.band-mil .sb-tag{background:var(--mil-bg);color:#0D6B5C}
+.band-hya .sb-name{color:var(--hya)}.band-hya .sb-emblem{background:var(--hya-bg);color:var(--hya)}.band-hya .sb-tag{background:var(--hya-bg);color:#5A3178}
+.band-sha .sb-name{color:var(--sha)}.band-sha .sb-emblem{background:var(--sha-bg);color:var(--sha)}.band-sha .sb-tag{background:var(--sha-bg);color:#25613C}
+
+/* ══════════ 03 — TEA PARTY (CONVERSATION FLOW) ══════════ */
+.tea-bg{background:linear-gradient(180deg,var(--cream) 0%,#FFF8F3 30%,#FFF5EE 50%,#FFF8F3 70%,var(--cream) 100%);position:relative;overflow:hidden}
+.tea-bg::before{content:'';position:absolute;top:30%;right:-100px;width:300px;height:300px;border:2px solid #E88B8B;border-radius:50%;opacity:.04;animation:fh 15s var(--eq) infinite alternate}
+
+.tea-timeline{position:relative;max-width:800px;margin:0 auto}
+.tea-timeline::before{content:'';position:absolute;left:28px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--geh),var(--tri),var(--sha));opacity:.15}
+.tea-item{display:flex;gap:24px;padding:0 0 48px;position:relative}
+.tea-item:last-child{padding-bottom:0}
+.tea-dot{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-size:24px;flex-shrink:0;position:relative;z-index:1;box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.tea-dot .lucide{stroke-width:1.8}
+.tea-body{flex:1;padding-top:8px}
+.tea-body h3{font-family:'Outfit',sans-serif;font-size:18px;font-weight:700;color:var(--n950);margin-bottom:6px}
+.tea-body p{font-size:13.5px;line-height:1.7;color:var(--n600);margin-bottom:14px;max-width:500px}
+.tea-steps{display:flex;flex-wrap:wrap;gap:8px}
+.tea-step{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:8px;font-size:11px;font-weight:600;background:rgba(255,255,255,.8);border:1px solid rgba(0,0,0,.05)}
+.tea-step-n{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:9px;font-weight:700;color:white;flex-shrink:0}
+
+/* ══════════ 04 — SYSTEMS ══════════ */
+.sys-bg{background:var(--cream)}
+/* Permission chain — horizontal track */
+.perm-track{background:linear-gradient(135deg,var(--n50),white);border:1px solid var(--n100);border-radius:20px;padding:clamp(24px,4vw,48px);margin-bottom:32px;position:relative;overflow:hidden}
+.perm-track::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--mil),var(--hya),var(--sky),var(--aby))}
+.perm-track h3{font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:var(--n950);margin-bottom:24px;display:flex;align-items:center;gap:8px}
+.perm-track h3 .lucide{color:var(--sky)}
+.pc{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap}
+.pc-node{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pc-c{width:60px;height:60px;border-radius:50%;display:grid;place-items:center;font-size:22px;transition:transform .3s var(--eo)}
+.pc-c:hover{transform:scale(1.12)}
+.pc-c .lucide{stroke-width:1.8}
+.pc-name{font-family:'Outfit',sans-serif;font-size:11px;font-weight:700}
+.pc-role{font-size:9px;color:var(--n400)}
+.pc-arrow{display:flex;flex-direction:column;align-items:center;gap:2px;padding:0 10px}
+.pc-al{width:40px;height:2px;border-radius:1px;position:relative;overflow:hidden}
+.pc-al::after{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:rgba(255,255,255,.6);animation:shm 2s linear infinite}
+@keyframes shm{0%{left:-50%}100%{left:150%}}
+.pc-at{font-size:8px;font-weight:600;letter-spacing:.5px}
+
+.sys-trio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.sys-c{padding:clamp(20px,3vw,32px);border-radius:16px;border:1px solid var(--n100);background:white;transition:transform .3s var(--eo)}
+.sys-c:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,0,0,.06)}
+.sys-ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:20px;margin-bottom:14px}
+.sys-ic .lucide{stroke-width:1.8}
+.sys-c h3{font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:var(--n950);margin-bottom:6px}
+.sys-c>p{font-size:12.5px;line-height:1.6;color:var(--n600)}
+.sys-steps{margin-top:14px;display:flex;flex-direction:column;gap:6px}
+.sys-st{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--n600)}
+.sys-st::before{content:'';width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sys-c--err .sys-ic{background:var(--geh-bg);color:var(--geh)}.sys-c--err .sys-st::before{background:var(--geh)}
+.sys-c--eval .sys-ic{background:var(--hya-bg);color:var(--hya)}.sys-c--eval .sys-st::before{background:var(--hya)}
+.sys-c--rec .sys-ic{background:var(--mil-bg);color:var(--mil)}.sys-c--rec .sys-st::before{background:var(--mil)}
+
+/* ══════════ FOOTER ══════════ */
+.foot{text-align:center;padding:80px 24px;color:var(--n400);font-size:12px;position:relative}
+.foot::before{content:'';display:block;width:40px;height:2px;background:var(--sky);margin:0 auto 24px;opacity:.3}
+.foot-b{font-family:'Outfit',sans-serif;font-weight:700;color:var(--sky)}
+
+/* ══════════ RESPONSIVE ══════════ */
+@media(max-width:900px){
+  .sch-grid{grid-template-columns:1fr}
+  .sb-inner.layout-a,.sb-inner.layout-b{grid-template-columns:1fr}
+  .sb-inner.layout-c{grid-template-columns:1fr;text-align:left}
+  .sb-inner.layout-wide{grid-template-columns:1fr}
+  .tea-timeline::before{left:20px}
+  .tea-dot{width:40px;height:40px;font-size:18px}
+  .sys-trio{grid-template-columns:1fr}
+  .hero-s{display:none}
+  .pc{flex-direction:column}
+  .pc-arrow{transform:rotate(90deg)}
+  .arch-box{overflow-x:auto;-webkit-overflow-scrolling:touch}
+}
+@media(max-width:600px){
+  .tf{flex-direction:column;gap:8px}
+  .tf-a{width:2px;height:24px;margin:0}
+  .tf-a::after{right:auto;top:auto;bottom:-1px;left:-4px;border:5px solid transparent;border-top:6px solid var(--n200);border-left:5px solid transparent}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="hero-sky" aria-hidden="true"><div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div><div class="cloud c4"></div></div>
+  <div class="halo-d h1" aria-hidden="true"></div><div class="halo-d h2" aria-hidden="true"></div><div class="halo-d h3" aria-hidden="true"></div>
+  <div class="hero-x x1" aria-hidden="true"></div><div class="hero-x x2" aria-hidden="true"></div>
+  <div class="hero-c">
+    <div class="hero-ey">System Architecture v0.1</div>
+    <h1 class="hero-t">
+      <span class="ln">S.C.H.A.L.E.</span>
+      <span class="ln">Agent System</span>
+      <span class="ln">from Kivotos, with purpose</span>
+    </h1>
+    <p class="hero-d">基于碧蓝档案世界观构建的多层级 Agent 协作体系。沙勒统筹，学院自治，社团执行——层层递进，生生不息。</p>
+    <div class="hero-sh"><div class="scr-l"></div>Scroll to explore</div>
+  </div>
+  <div class="hero-s">
+    <div class="s-halo"><div class="s-halo-i">先生</div></div>
+    <div class="s-tag">SENSEI &mdash; MAX AUTHORITY</div>
+  </div>
+</section>
+
+<main>
+
+<!-- ══════════ 00 — ARCHITECTURE ══════════ -->
+<div class="arch-wrap">
+  <div class="arch-halo ah1" aria-hidden="true"></div>
+  <div class="arch-halo ah2" aria-hidden="true"></div>
+  <section class="sec rv">
+    <div class="sec-n">00 &mdash; Full Picture</div>
+    <h2 class="sec-h">System Architecture</h2>
+    <p class="sec-s">从先生到社团 Agent，四层架构一目了然。指挥链向下派发，汇报链向上汇总，茶话会横向交流。</p>
+  </section>
+  <div class="arch-box rv" data-d="1" style="max-width:1200px;margin:0 auto;padding:clamp(1.5rem,3vw,2.5rem)">
+    <svg class="arch-svg" viewBox="0 0 760 440" style="max-height:75vh" role="img" aria-label="SCHALE Agent System 四层架构全景图">
+      <!-- L0: Sensei -->
+      <rect x="330" y="8" width="100" height="40" rx="20" fill="#FDF6EC" stroke="#D4943A" stroke-width="1.5"/>
+      <text x="380" y="25" text-anchor="middle" fill="#D4943A" font-family="Outfit" font-size="11" font-weight="800">SENSEI</text>
+      <text x="380" y="38" text-anchor="middle" fill="#B07830" font-family="Outfit" font-size="7.5">Maximum Authority</text>
+      <!-- L0→L1 -->
+      <line x1="380" y1="48" x2="380" y2="68" stroke="#128AFA" stroke-width="1.5" stroke-dasharray="4 3" class="pa"/>
+      <!-- L1: SCHALE -->
+      <rect x="290" y="68" width="180" height="50" rx="14" fill="#128AFA"/>
+      <text x="380" y="89" text-anchor="middle" fill="white" font-family="Outfit" font-size="14" font-weight="800">S.C.H.A.L.E.</text>
+      <text x="380" y="105" text-anchor="middle" fill="#90C8FF" font-family="Outfit" font-size="8" font-weight="500">Leader Agent</text>
+      <!-- L1→L2 -->
+      <line x1="330" y1="118" x2="68" y2="168" stroke="#128AFA" stroke-width="1.2" opacity=".2"/>
+      <line x1="345" y1="118" x2="192" y2="168" stroke="#128AFA" stroke-width="1.2" opacity=".22"/>
+      <line x1="370" y1="118" x2="318" y2="168" stroke="#128AFA" stroke-width="1.2" opacity=".25"/>
+      <line x1="390" y1="118" x2="442" y2="168" stroke="#128AFA" stroke-width="1.2" opacity=".25"/>
+      <line x1="415" y1="118" x2="568" y2="168" stroke="#128AFA" stroke-width="1.2" opacity=".22"/>
+      <line x1="430" y1="118" x2="692" y2="168" stroke="#128AFA" stroke-width="1.2" opacity=".18"/>
+      <!-- Labels -->
+      <rect x="140" y="140" width="60" height="16" rx="8" fill="#E8F4FF"/><text x="170" y="152" text-anchor="middle" fill="#128AFA" font-family="Outfit" font-size="7" font-weight="700">DISPATCH</text>
+      <rect x="555" y="140" width="48" height="16" rx="8" fill="#E8F4FF"/><text x="579" y="152" text-anchor="middle" fill="#128AFA" font-family="Outfit" font-size="7" font-weight="700">REPORT</text>
+      <!-- L2: Schools -->
+      <rect x="10" y="168" width="116" height="42" rx="11" fill="#D4943A"/><text x="68" y="186" text-anchor="middle" fill="white" font-family="Zen Kaku Gothic New" font-size="11" font-weight="700">阿拜多斯</text><text x="68" y="200" text-anchor="middle" fill="#FFE0B2" font-family="Outfit" font-size="7.5" font-weight="600">Sub Leader</text>
+      <rect x="134" y="168" width="116" height="42" rx="11" fill="#C83C3C"/><text x="192" y="186" text-anchor="middle" fill="white" font-family="Zen Kaku Gothic New" font-size="11" font-weight="700">格黑娜</text><text x="192" y="200" text-anchor="middle" fill="#FFB3B3" font-family="Outfit" font-size="7.5" font-weight="600">Sub Leader</text>
+      <rect x="258" y="168" width="116" height="42" rx="11" fill="#2B5EA7"/><text x="316" y="186" text-anchor="middle" fill="white" font-family="Zen Kaku Gothic New" font-size="11" font-weight="700">圣三一</text><text x="316" y="200" text-anchor="middle" fill="#A8C5E8" font-family="Outfit" font-size="7.5" font-weight="600">Sub Leader</text>
+      <rect x="382" y="168" width="116" height="42" rx="11" fill="#1A9B8A"/><text x="440" y="186" text-anchor="middle" fill="white" font-family="Zen Kaku Gothic New" font-size="11" font-weight="700">千年</text><text x="440" y="200" text-anchor="middle" fill="#A8E6DE" font-family="Outfit" font-size="7.5" font-weight="600">Sub Leader</text>
+      <rect x="506" y="168" width="116" height="42" rx="11" fill="#7B4FA0"/><text x="564" y="186" text-anchor="middle" fill="white" font-family="Zen Kaku Gothic New" font-size="11" font-weight="700">百鬼夜行</text><text x="564" y="200" text-anchor="middle" fill="#D4B8E8" font-family="Outfit" font-size="7.5" font-weight="600">Sub Leader</text>
+      <rect x="630" y="168" width="116" height="42" rx="11" fill="#3A8F5C"/><text x="688" y="186" text-anchor="middle" fill="white" font-family="Zen Kaku Gothic New" font-size="11" font-weight="700">山海经</text><text x="688" y="200" text-anchor="middle" fill="#B2DFC5" font-family="Outfit" font-size="7.5" font-weight="600">Sub Leader</text>
+      <!-- Tea party dashed -->
+      <line x1="126" y1="189" x2="134" y2="189" stroke="#E88B8B" stroke-width="1.5" stroke-dasharray="3 2" opacity=".5"/>
+      <line x1="250" y1="189" x2="258" y2="189" stroke="#E88B8B" stroke-width="1.5" stroke-dasharray="3 2" opacity=".5"/>
+      <line x1="374" y1="189" x2="382" y2="189" stroke="#E88B8B" stroke-width="1.5" stroke-dasharray="3 2" opacity=".5"/>
+      <line x1="498" y1="189" x2="506" y2="189" stroke="#E88B8B" stroke-width="1.5" stroke-dasharray="3 2" opacity=".5"/>
+      <line x1="622" y1="189" x2="630" y2="189" stroke="#E88B8B" stroke-width="1.5" stroke-dasharray="3 2" opacity=".5"/>
+      <!-- L2→L3 -->
+      <line x1="68" y1="210" x2="38" y2="248" stroke="#D4943A" stroke-width=".8" opacity=".3"/><line x1="68" y1="210" x2="106" y2="248" stroke="#D4943A" stroke-width=".8" opacity=".3"/>
+      <line x1="192" y1="210" x2="162" y2="248" stroke="#C83C3C" stroke-width=".8" opacity=".3"/><line x1="192" y1="210" x2="228" y2="248" stroke="#C83C3C" stroke-width=".8" opacity=".3"/>
+      <line x1="316" y1="210" x2="294" y2="248" stroke="#2B5EA7" stroke-width=".8" opacity=".3"/><line x1="316" y1="210" x2="344" y2="248" stroke="#2B5EA7" stroke-width=".8" opacity=".3"/>
+      <line x1="440" y1="210" x2="408" y2="248" stroke="#1A9B8A" stroke-width=".8" opacity=".3"/><line x1="440" y1="210" x2="440" y2="248" stroke="#1A9B8A" stroke-width=".8" opacity=".3"/><line x1="440" y1="210" x2="472" y2="248" stroke="#1A9B8A" stroke-width=".8" opacity=".3"/>
+      <line x1="564" y1="210" x2="540" y2="248" stroke="#7B4FA0" stroke-width=".8" opacity=".3"/><line x1="564" y1="210" x2="590" y2="248" stroke="#7B4FA0" stroke-width=".8" opacity=".3"/>
+      <line x1="688" y1="210" x2="664" y2="248" stroke="#3A8F5C" stroke-width=".8" opacity=".3"/><line x1="688" y1="210" x2="718" y2="248" stroke="#3A8F5C" stroke-width=".8" opacity=".3"/>
+      <!-- L3: Clubs -->
+      <rect x="6" y="248" width="64" height="28" rx="8" fill="#FDF6EC" stroke="#D4943A" stroke-width=".8"/><text x="38" y="266" text-anchor="middle" fill="#8B6425" font-family="Zen Kaku Gothic New" font-size="8" font-weight="600">文件管理</text>
+      <rect x="76" y="248" width="64" height="28" rx="8" fill="#FDF6EC" stroke="#D4943A" stroke-width=".8"/><text x="108" y="266" text-anchor="middle" fill="#8B6425" font-family="Zen Kaku Gothic New" font-size="8" font-weight="600">日志监控</text>
+      <rect x="146" y="248" width="64" height="28" rx="8" fill="#FDF0EF" stroke="#C83C3C" stroke-width=".8"/><text x="178" y="266" text-anchor="middle" fill="#8B2222" font-family="Zen Kaku Gothic New" font-size="8" font-weight="600">安全审计</text>
+      <rect x="216" y="248" width="64" height="28" rx="8" fill="#FDF0EF" stroke="#C83C3C" stroke-width=".8"/><text x="248" y="266" text-anchor="middle" fill="#8B2222" font-family="Zen Kaku Gothic New" font-size="8" font-weight="600">漏洞猎人</text>
+      <rect x="286" y="248" width="50" height="28" rx="8" fill="#EDF3FB" stroke="#2B5EA7" stroke-width=".8"/><text x="311" y="266" text-anchor="middle" fill="#1D4175" font-family="Outfit" font-size="8" font-weight="600">Review</text>
+      <rect x="342" y="248" width="50" height="28" rx="8" fill="#EDF3FB" stroke="#2B5EA7" stroke-width=".8"/><text x="367" y="266" text-anchor="middle" fill="#1D4175" font-family="Zen Kaku Gothic New" font-size="7.5" font-weight="600">重构优化</text>
+      <rect x="398" y="248" width="50" height="28" rx="8" fill="#ECF9F7" stroke="#1A9B8A" stroke-width=".8"/><text x="423" y="266" text-anchor="middle" fill="#0D6B5C" font-family="Outfit" font-size="7.5" font-weight="600">Seminar</text>
+      <rect x="454" y="248" width="36" height="28" rx="8" fill="#ECF9F7" stroke="#1A9B8A" stroke-width=".8"/><text x="472" y="266" text-anchor="middle" fill="#0D6B5C" font-family="Outfit" font-size="7" font-weight="600">+3</text>
+      <rect x="530" y="248" width="50" height="28" rx="8" fill="#F5EFF9" stroke="#7B4FA0" stroke-width=".8"/><text x="555" y="266" text-anchor="middle" fill="#5A3178" font-family="Zen Kaku Gothic New" font-size="7.5" font-weight="600">情报收集</text>
+      <rect x="586" y="248" width="50" height="28" rx="8" fill="#F5EFF9" stroke="#7B4FA0" stroke-width=".8"/><text x="611" y="266" text-anchor="middle" fill="#5A3178" font-family="Zen Kaku Gothic New" font-size="7.5" font-weight="600">数据分析</text>
+      <rect x="654" y="248" width="44" height="28" rx="8" fill="#EDF7F1" stroke="#3A8F5C" stroke-width=".8"/><text x="676" y="266" text-anchor="middle" fill="#25613C" font-family="Outfit" font-size="7.5" font-weight="600">CI/CD</text>
+      <rect x="704" y="248" width="50" height="28" rx="8" fill="#EDF7F1" stroke="#3A8F5C" stroke-width=".8"/><text x="729" y="266" text-anchor="middle" fill="#25613C" font-family="Zen Kaku Gothic New" font-size="7.5" font-weight="600">部署运维</text>
+      <!-- L4: Agent dots -->
+      <g opacity=".4">
+        <circle cx="28" cy="296" r="4" fill="#D4943A"/><circle cx="42" cy="300" r="4" fill="#D4943A"/><circle cx="56" cy="294" r="4" fill="#D4943A"/><circle cx="96" cy="296" r="4" fill="#D4943A"/><circle cx="110" cy="300" r="4" fill="#D4943A"/>
+        <circle cx="156" cy="296" r="4" fill="#C83C3C"/><circle cx="170" cy="300" r="4" fill="#C83C3C"/><circle cx="184" cy="294" r="4" fill="#C83C3C"/><circle cx="196" cy="300" r="4" fill="#C83C3C"/><circle cx="226" cy="296" r="4" fill="#C83C3C"/><circle cx="240" cy="300" r="4" fill="#C83C3C"/><circle cx="254" cy="294" r="4" fill="#C83C3C"/>
+        <circle cx="296" cy="296" r="4" fill="#2B5EA7"/><circle cx="308" cy="300" r="4" fill="#2B5EA7"/><circle cx="320" cy="294" r="4" fill="#2B5EA7"/><circle cx="304" cy="306" r="4" fill="#2B5EA7"/><circle cx="316" cy="308" r="4" fill="#2B5EA7"/><circle cx="350" cy="296" r="4" fill="#2B5EA7"/><circle cx="362" cy="300" r="4" fill="#2B5EA7"/><circle cx="374" cy="294" r="4" fill="#2B5EA7"/>
+        <circle cx="408" cy="296" r="4" fill="#1A9B8A"/><circle cx="420" cy="300" r="4" fill="#1A9B8A"/><circle cx="432" cy="294" r="4" fill="#1A9B8A"/><circle cx="414" cy="306" r="4" fill="#1A9B8A"/><circle cx="456" cy="296" r="4" fill="#1A9B8A"/><circle cx="468" cy="300" r="4" fill="#1A9B8A"/><circle cx="480" cy="294" r="4" fill="#1A9B8A"/><circle cx="462" cy="306" r="4" fill="#1A9B8A"/>
+        <circle cx="540" cy="296" r="4" fill="#7B4FA0"/><circle cx="554" cy="300" r="4" fill="#7B4FA0"/><circle cx="566" cy="294" r="4" fill="#7B4FA0"/><circle cx="596" cy="296" r="4" fill="#7B4FA0"/><circle cx="608" cy="300" r="4" fill="#7B4FA0"/>
+        <circle cx="664" cy="296" r="4" fill="#3A8F5C"/><circle cx="678" cy="300" r="4" fill="#3A8F5C"/><circle cx="692" cy="294" r="4" fill="#3A8F5C"/><circle cx="714" cy="296" r="4" fill="#3A8F5C"/><circle cx="728" cy="300" r="4" fill="#3A8F5C"/><circle cx="742" cy="294" r="4" fill="#3A8F5C"/>
+      </g>
+      <!-- Layer labels right -->
+      <text x="754" y="28" text-anchor="end" fill="#A3BDD1" font-family="Outfit" font-size="8" font-weight="600">L0</text>
+      <text x="754" y="96" text-anchor="end" fill="#A3BDD1" font-family="Outfit" font-size="8" font-weight="600">L1</text>
+      <text x="754" y="230" text-anchor="end" fill="#A3BDD1" font-family="Outfit" font-size="8" font-weight="600">L2</text>
+      <text x="754" y="280" text-anchor="end" fill="#A3BDD1" font-family="Outfit" font-size="8" font-weight="600">L3</text>
+      <text x="754" y="310" text-anchor="end" fill="#A3BDD1" font-family="Outfit" font-size="8" font-weight="600">L4</text>
+      <!-- Permission section -->
+      <rect x="16" y="336" width="728" height="96" rx="14" fill="#F4F7FA" stroke="#D0DFE9" stroke-width="1"/>
+      <text x="40" y="356" fill="#3D6488" font-family="Outfit" font-size="10" font-weight="700">PERMISSION ESCALATION</text>
+      <circle cx="120" cy="392" r="18" fill="#ECF9F7" stroke="#1A9B8A" stroke-width="1.5"/><text x="120" y="396" text-anchor="middle" fill="#1A9B8A" font-family="Outfit" font-size="8" font-weight="700">Agent</text>
+      <line x1="138" y1="392" x2="210" y2="392" stroke="#1A9B8A" stroke-width="1.5"/><text x="174" y="386" text-anchor="middle" fill="#1A9B8A" font-family="Outfit" font-size="7" font-weight="600">request</text><polygon points="207,388 215,392 207,396" fill="#1A9B8A"/>
+      <circle cx="248" cy="392" r="18" fill="#F5EFF9" stroke="#7B4FA0" stroke-width="1.5"/><text x="248" y="389" text-anchor="middle" fill="#7B4FA0" font-family="Outfit" font-size="7" font-weight="700">Sub</text><text x="248" y="399" text-anchor="middle" fill="#7B4FA0" font-family="Outfit" font-size="7" font-weight="700">Leader</text>
+      <line x1="266" y1="392" x2="338" y2="392" stroke="#7B4FA0" stroke-width="1.5"/><text x="302" y="386" text-anchor="middle" fill="#7B4FA0" font-family="Outfit" font-size="7" font-weight="600">escalate</text><polygon points="335,388 343,392 335,396" fill="#7B4FA0"/>
+      <circle cx="376" cy="392" r="18" fill="#E8F4FF" stroke="#128AFA" stroke-width="1.5"/><text x="376" y="396" text-anchor="middle" fill="#128AFA" font-family="Outfit" font-size="7" font-weight="700">Leader</text>
+      <line x1="394" y1="392" x2="466" y2="392" stroke="#128AFA" stroke-width="1.5"/><text x="430" y="386" text-anchor="middle" fill="#128AFA" font-family="Outfit" font-size="7" font-weight="600">escalate</text><polygon points="463,388 471,392 463,396" fill="#128AFA"/>
+      <circle cx="504" cy="392" r="18" fill="#FDF6EC" stroke="#D4943A" stroke-width="1.5"/><text x="504" y="396" text-anchor="middle" fill="#D4943A" font-family="Outfit" font-size="8" font-weight="700">先生</text>
+      <text x="560" y="389" fill="#A3BDD1" font-family="Outfit" font-size="9" font-weight="500">Approve</text><text x="560" y="402" fill="#A3BDD1" font-family="Outfit" font-size="9" font-weight="500">or Deny</text>
+    </svg>
+    <div class="arch-legend">
+      <div class="legend-i"><div class="legend-ln" style="background:#128AFA"></div>Command</div>
+      <div class="legend-i"><div class="legend-ds" style="border-color:#128AFA"></div>Report</div>
+      <div class="legend-i"><div class="legend-ds" style="border-color:#E88B8B"></div>Tea Party</div>
+      <div class="legend-i"><div class="legend-ln" style="background:linear-gradient(90deg,#1A9B8A,#7B4FA0,#128AFA,#D4943A)"></div>Permission</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ 01 — SCHALE ══════════ -->
+<div class="schale-bg">
+  <section class="sec">
+    <div class="rv">
+      <div class="sec-n">01 &mdash; Command Center</div>
+      <h2 class="sec-h">SCHALE 沙勒</h2>
+      <p class="sec-s" style="margin-bottom:48px">连接先生与整个基沃托斯的中枢神经。Leader Agent 理解你的意图，分解任务，调度全局。</p>
+    </div>
+    <div class="sch-grid">
+      <div class="sch-vis rv" data-d="1">
+        <div class="l-halo"><div class="l-ring"></div><div class="l-core">Leader<br>Agent</div></div>
+        <div class="l-name">Agent Leader</div>
+        <div class="l-role">日常交互 / 意图理解 / 任务派发</div>
+        <div class="pl"></div>
+        <div class="fn-row">
+          <div class="fn"><i data-lucide="brain" style="width:14px;height:14px"></i>意图分析</div>
+          <div class="fn"><i data-lucide="git-branch" style="width:14px;height:14px"></i>任务分解</div>
+          <div class="fn"><i data-lucide="send" style="width:14px;height:14px"></i>学校调度</div>
+          <div class="fn"><i data-lucide="layers" style="width:14px;height:14px"></i>结果整合</div>
+          <div class="fn"><i data-lucide="shield-check" style="width:14px;height:14px"></i>权限审批</div>
+        </div>
+      </div>
+      <div class="sch-info">
+        <div class="ib rv" data-d="2">
+          <h3><i data-lucide="route" style="width:18px;height:18px"></i>指挥链路</h3>
+          <p>先生的每一条指令，由 Leader Agent 解析后分发至对应学校的理事会 Sub Leader。Sub Leader 路由到校内最合适的社团执行，完成后逐级汇报。</p>
+        </div>
+        <div class="ib rv" data-d="3">
+          <h3><i data-lucide="crown" style="width:18px;height:18px"></i>唯一出口</h3>
+          <p>沙勒只有一个 Leader Agent 与先生对接，但内部可与多个学校的 Sub Leader 同时通信。这确保了信息一致性和决策权集中。</p>
+        </div>
+        <div class="tf rv" data-d="4">
+          <div class="tf-n"><div class="tf-d" style="background:#FDF6EC;color:var(--aby)"><i data-lucide="crown" style="width:20px;height:20px"></i></div><div class="tf-l">Sensei</div><div class="tf-s">发起需求</div></div>
+          <div class="tf-a"></div>
+          <div class="tf-n"><div class="tf-d" style="background:var(--sky);color:white"><i data-lucide="star" style="width:20px;height:20px"></i></div><div class="tf-l">Leader</div><div class="tf-s">任务分解</div></div>
+          <div class="tf-a"></div>
+          <div class="tf-n"><div class="tf-d" style="background:var(--hya-bg);color:var(--hya)"><i data-lucide="network" style="width:20px;height:20px"></i></div><div class="tf-l">Sub Leader</div><div class="tf-s">路由执行</div></div>
+          <div class="tf-a"></div>
+          <div class="tf-n"><div class="tf-d" style="background:var(--mil-bg);color:var(--mil)"><i data-lucide="users" style="width:20px;height:20px"></i></div><div class="tf-l">Clubs</div><div class="tf-s">协同完成</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════ 02 — SCHOOLS (EACH A WORLD) ══════════ -->
+<div class="schools-bg">
+  <section class="sec rv">
+    <div class="sec-n">02 &mdash; Academies</div>
+    <h2 class="sec-h">学院矩阵</h2>
+    <p class="sec-s">每所学院自治运作，理事会 Sub Leader 统领全局，下辖多个社团协同执行任务。</p>
+  </section>
+
+  <!-- Abydos — left identity, right description -->
+  <div class="school-band band-aby">
+    <div class="sb-deco" aria-hidden="true"></div>
+    <div class="sb-inner layout-a rv" data-d="1">
+      <div class="sb-id">
+        <div class="sb-emblem"><i data-lucide="sun" style="width:26px;height:26px"></i></div>
+        <div class="sb-name">阿拜多斯</div>
+        <div class="sb-jp">Abydos &mdash; アビドス高等学校</div>
+        <div class="sb-tag">Infrastructure</div>
+      </div>
+      <div>
+        <p class="sb-desc">沙漠中的坚守者。在最艰苦的环境下维护基础设施，保障系统稳定运行。文件管理、日志监控——平凡但不可替代的基石。</p>
+        <div class="sb-clubs">
+          <div class="sb-club"><i data-lucide="folder" style="width:14px;height:14px"></i>文件管理社 <span class="sb-ct">3</span></div>
+          <div class="sb-club"><i data-lucide="activity" style="width:14px;height:14px"></i>日志监控社 <span class="sb-ct">2</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gehenna — reversed layout -->
+  <div class="school-band band-geh">
+    <div class="sb-deco" aria-hidden="true"></div>
+    <div class="sb-inner layout-b rv" data-d="1">
+      <div>
+        <p class="sb-desc">攻防一体的安全卫士。以混乱之名守护秩序——安全审计发现漏洞，漏洞猎人修复威胁。万魔殿的正义，以火焰为名。</p>
+        <div class="sb-clubs">
+          <div class="sb-club"><i data-lucide="shield-alert" style="width:14px;height:14px"></i>安全审计社 <span class="sb-ct">4</span></div>
+          <div class="sb-club"><i data-lucide="bug" style="width:14px;height:14px"></i>漏洞猎人社 <span class="sb-ct">3</span></div>
+        </div>
+      </div>
+      <div class="sb-id" style="text-align:right">
+        <div class="sb-emblem" style="margin-left:auto"><i data-lucide="flame" style="width:26px;height:26px"></i></div>
+        <div class="sb-name">格黑娜</div>
+        <div class="sb-jp">Gehenna &mdash; ゲヘナ学園</div>
+        <div class="sb-tag" style="float:right">Security</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Millennium — wide layout, featured -->
+  <div class="school-band band-mil">
+    <div class="sb-deco" aria-hidden="true"></div>
+    <div class="sb-inner layout-wide rv" data-d="1" style="align-items:center">
+      <div class="sb-id">
+        <div class="sb-emblem"><i data-lucide="cpu" style="width:26px;height:26px"></i></div>
+        <div class="sb-name">千年</div>
+        <div class="sb-jp">Millennium</div>
+        <div class="sb-tag">R&D</div>
+      </div>
+      <div>
+        <p class="sb-desc" style="max-width:none">追求真理的科学圣殿。从 Seminar 到 C&C，每个社团都是创新的引擎——研发新工具、新方法、新可能。千年科学院的探索，永不止步。</p>
+      </div>
+      <div class="sb-clubs" style="margin-top:0;flex-direction:column;gap:6px">
+        <div class="sb-club"><i data-lucide="microscope" style="width:14px;height:14px"></i>Seminar <span class="sb-ct">4</span></div>
+        <div class="sb-club"><i data-lucide="gamepad-2" style="width:14px;height:14px"></i>Game Dev <span class="sb-ct">3</span></div>
+        <div class="sb-club"><i data-lucide="wrench" style="width:14px;height:14px"></i>C&C <span class="sb-ct">4</span></div>
+        <div class="sb-club"><i data-lucide="settings" style="width:14px;height:14px"></i>Engineering <span class="sb-ct">3</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trinity — left layout -->
+  <div class="school-band band-tri">
+    <div class="sb-deco" aria-hidden="true"></div>
+    <div class="sb-inner layout-a rv" data-d="1">
+      <div class="sb-id">
+        <div class="sb-emblem"><i data-lucide="cross" style="width:26px;height:26px"></i></div>
+        <div class="sb-name">圣三一</div>
+        <div class="sb-jp">Trinity &mdash; トリニティ総合学園</div>
+        <div class="sb-tag">Quality</div>
+      </div>
+      <div>
+        <p class="sb-desc">以优雅与秩序守护代码纯净。Code Review 确保每一行都经得起审视，重构优化社让架构保持优雅。</p>
+        <div class="sb-clubs">
+          <div class="sb-club"><i data-lucide="scan-eye" style="width:14px;height:14px"></i>Code Review <span class="sb-ct">5</span></div>
+          <div class="sb-club"><i data-lucide="rotate-ccw" style="width:14px;height:14px"></i>重构优化社 <span class="sb-ct">3</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hyakkiyako — reversed -->
+  <div class="school-band band-hya">
+    <div class="sb-deco" aria-hidden="true"></div>
+    <div class="sb-inner layout-b rv" data-d="1">
+      <div>
+        <p class="sb-desc">暗处的耳目。情报收集社捕获数据信号，数据分析社将噪音化为洞察。百鬼夜行的忍者们，无声却无所不知。</p>
+        <div class="sb-clubs">
+          <div class="sb-club"><i data-lucide="radar" style="width:14px;height:14px"></i>情报收集社 <span class="sb-ct">3</span></div>
+          <div class="sb-club"><i data-lucide="bar-chart-3" style="width:14px;height:14px"></i>数据分析社 <span class="sb-ct">2</span></div>
+        </div>
+      </div>
+      <div class="sb-id" style="text-align:right">
+        <div class="sb-emblem" style="margin-left:auto"><i data-lucide="ghost" style="width:26px;height:26px"></i></div>
+        <div class="sb-name">百鬼夜行</div>
+        <div class="sb-jp">Hyakkiyako &mdash; 百鬼夜行連合学院</div>
+        <div class="sb-tag" style="float:right">Intel</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shanhaijing — left layout -->
+  <div class="school-band band-sha">
+    <div class="sb-deco" aria-hidden="true">
+      <svg viewBox="0 0 200 200" fill="none"><polygon points="100,10 190,60 190,140 100,190 10,140 10,60" stroke="#3A8F5C" stroke-width="2" fill="none"/></svg>
+    </div>
+    <div class="sb-inner layout-a rv" data-d="1">
+      <div class="sb-id">
+        <div class="sb-emblem"><i data-lucide="mountain" style="width:26px;height:26px"></i></div>
+        <div class="sb-name">山海经</div>
+        <div class="sb-jp">Shanhaijing &mdash; 山海経高級中学校</div>
+        <div class="sb-tag">DevOps</div>
+      </div>
+      <div>
+        <p class="sb-desc">构建与交付的守护者。CI/CD 社让代码从仓库到生产只需一键，部署运维社确保上线后的每一秒都平稳。</p>
+        <div class="sb-clubs">
+          <div class="sb-club"><i data-lucide="rocket" style="width:14px;height:14px"></i>CI/CD 社 <span class="sb-ct">3</span></div>
+          <div class="sb-club"><i data-lucide="server" style="width:14px;height:14px"></i>部署运维社 <span class="sb-ct">3</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ 03 — TEA PARTY ══════════ -->
+<div class="tea-bg">
+  <section class="sec">
+    <div class="rv">
+      <div class="sec-n">03 &mdash; Communication</div>
+      <h2 class="sec-h">茶话会与通信</h2>
+      <p class="sec-s" style="margin-bottom:56px">Agent 间的知识流转——跨校、跨社团、跨层级的交流机制，让整个系统持续进化。</p>
+    </div>
+    <div class="tea-timeline">
+      <!-- Global tea party -->
+      <div class="tea-item rv" data-d="1">
+        <div class="tea-dot" style="background:#FFF5F0;color:var(--geh)"><i data-lucide="coffee" style="width:24px;height:24px"></i></div>
+        <div class="tea-body">
+          <h3>全体茶话会</h3>
+          <p>最高级别交流。各 Sub Leader 与沙勒 Leader Agent 定期聚首，汇报成果、交叉学习、调整策略。</p>
+          <div class="tea-steps">
+            <div class="tea-step"><div class="tea-step-n" style="background:var(--geh)">1</div>Leader Agent 发起</div>
+            <div class="tea-step"><div class="tea-step-n" style="background:var(--geh)">2</div>各校汇报</div>
+            <div class="tea-step"><div class="tea-step-n" style="background:var(--geh)">3</div>交叉学习</div>
+            <div class="tea-step"><div class="tea-step-n" style="background:var(--geh)">4</div>调整策略</div>
+          </div>
+        </div>
+      </div>
+      <!-- School tea party -->
+      <div class="tea-item rv" data-d="2">
+        <div class="tea-dot" style="background:#F0F5FF;color:var(--tri)"><i data-lucide="messages-square" style="width:24px;height:24px"></i></div>
+        <div class="tea-body">
+          <h3>校内茶话会</h3>
+          <p>学校内社团间的经验分享与协作发现。Sub Leader 召集社团代表，跨社团技能传递，优化资源配置。</p>
+          <div class="tea-steps">
+            <div class="tea-step"><div class="tea-step-n" style="background:var(--tri)">1</div>召集代表</div>
+            <div class="tea-step"><div class="tea-step-n" style="background:var(--tri)">2</div>展示成果</div>
+            <div class="tea-step"><div class="tea-step-n" style="background:var(--tri)">3</div>技能传递</div>
+          </div>
+        </div>
+      </div>
+      <!-- Cross-school -->
+      <div class="tea-item rv" data-d="3">
+        <div class="tea-dot" style="background:#F0FFF5;color:var(--sha)"><i data-lucide="globe" style="width:24px;height:24px"></i></div>
+        <div class="tea-body">
+          <h3>跨校协作</h3>
+          <p>当任务需要多校优势社团联合出击时，各自 Sub Leader 对接，汇总结果上报 Leader Agent。</p>
+          <div class="tea-steps">
+            <div class="tea-step"><div class="tea-step-n" style="background:var(--sha)">1</div>发起协作</div>
+            <div class="tea-step"><div class="tea-step-n" style="background:var(--sha)">2</div>指派社团</div>
+            <div class="tea-step"><div class="tea-step-n" style="background:var(--sha)">3</div>汇总汇报</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════ 04 — SYSTEMS ══════════ -->
+<div class="sys-bg">
+  <section class="sec">
+    <div class="rv">
+      <div class="sec-n">04 &mdash; Core Systems</div>
+      <h2 class="sec-h">运转机制</h2>
+      <p class="sec-s" style="margin-bottom:40px">错误巡检、考核淘汰、动态招募——保障整个体系健康运作的支柱系统。</p>
+    </div>
+    <div class="sys-trio">
+      <div class="sys-c sys-c--err rv" data-d="1">
+        <div class="sys-ic"><i data-lucide="alert-triangle" style="width:20px;height:20px"></i></div>
+        <h3>Error Patrol</h3>
+        <p>Leader Agent 定期派出 Sub Leader 巡检系统健康。</p>
+        <div class="sys-steps">
+          <div class="sys-st">触发巡检指令</div>
+          <div class="sys-st">各 Sub Leader 检查校内状态</div>
+          <div class="sys-st">实时记录异常日志</div>
+          <div class="sys-st">汇总至 Leader Agent</div>
+        </div>
+      </div>
+      <div class="sys-c sys-c--eval rv" data-d="2">
+        <div class="sys-ic"><i data-lucide="clipboard-check" style="width:20px;height:20px"></i></div>
+        <h3>Evaluation</h3>
+        <p>Sub Leader 不定期考核社团内 Agent 能力。</p>
+        <div class="sys-steps">
+          <div class="sys-st">设定考核标准</div>
+          <div class="sys-st">评估任务完成质量</div>
+          <div class="sys-st">未达标进入淘汰流程</div>
+          <div class="sys-st">清除失效 Agent</div>
+        </div>
+      </div>
+      <div class="sys-c sys-c--rec rv" data-d="3">
+        <div class="sys-ic"><i data-lucide="user-plus" style="width:20px;height:20px"></i></div>
+        <h3>Recruitment</h3>
+        <p>识别能力缺口，动态招募特化 Agent。</p>
+        <div class="sys-steps">
+          <div class="sys-st">识别能力缺口</div>
+          <div class="sys-st">定义能力规格</div>
+          <div class="sys-st">创建并分配权限</div>
+          <div class="sys-st">编入或组建社团</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<footer class="foot">
+  <span class="foot-b">S.C.H.A.L.E.</span> Agent Command System &mdash; Blue Archive Universe &mdash; Architecture v0.1
+</footer>
+
+<script>
+const obs=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){t.target.classList.add('vis');obs.unobserve(t.target)}})},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+let tk=false;window.addEventListener('scroll',()=>{if(!tk){requestAnimationFrame(()=>{const s=window.scrollY;document.querySelectorAll('.halo-d').forEach((h,i)=>{h.style.transform=`translateY(${s*(.03+i*.015)}px)`});tk=false});tk=true}});
+const hero=document.querySelector('.hero'),sh=document.querySelector('.s-halo');
+if(hero&&sh)hero.addEventListener('mousemove',e=>{const r=hero.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;sh.style.transform=`translate(${x*12}px,${y*12}px)`});
+document.querySelector('.hero-sh')?.addEventListener('click',()=>{document.querySelector('.arch-wrap')?.scrollIntoView({behavior:'smooth'})});
+lucide.createIcons();
+</script>
+</body>
+</html>
